@@ -75,6 +75,37 @@ void bm2_polar(double *restrict g1, double *restrict g2)
 	*g2 = y * sqrt(-2 * log(s) / s);
 }
 
+/*Vogliamo calcolare il tempo di esecuzione di box muller normale con singola
+gaussiana e quello a doppia gaussiana polare.
+Per calcolare il tempo si usa la funzione clock() che misura il tempo macchina di inizio
+e il tempo macchina di fine. Si da quindi una differenza tra i due tempi e si divide per
+CLOCK_PER_SEC definito nella libreria time.h che converte il tempo macchina in secondi.*/
+
+void orologio(void)
+{
+	long int i, sample;
+	double tm1, tm2, tempo_esecuzione;
+	clock_t tempo1, tempo2;
+	sample = 50000000;
+	tempo1 = clock();
+	for (i = 0; i < sample; i++)
+	{
+		boxm_base(&tm1, &tm2);
+	}
+	tempo2 = clock();
+	tempo_esecuzione = ((double)(tempo2 - tempo1)) / CLOCKS_PER_SEC;
+	printf("Il tempo di esecuzione in secondi del box muller normale è: %.32f \n", tempo_esecuzione);
+
+	tempo1 = clock();
+	for (i = 0; i < sample; i++)
+	{
+		bm2_polar(&tm1, &tm2);
+	}
+	tempo2 = clock();
+	tempo_esecuzione = ((double)(tempo2 - tempo1)) / CLOCKS_PER_SEC;
+	printf("Il tempo di esecuzione in secondi del box muller polare è: %.32f \n", tempo_esecuzione);
+}
+
 int main(int insert, char **termini)
 {
 	long int sample;
@@ -84,8 +115,9 @@ int main(int insert, char **termini)
 		fprintf(stdout, "Per usare il programma è necessario inserire il numero di\n"
 						"campionamenti che si vuole fare dopo il nome del programma.\n"
 						"La forma da usare è:\n");
-		fprintf(stdout, "%s con accanto il numero campionamenti desideari\n", termini[0]);
-		fprintf(stdout, "In uscita viene fornita la stima di pi greco con il simple sampling Monte carlo.\n");
+		fprintf(stdout, "%s con accanto il numero campionamenti desiderati\n", termini[0]);
+		fprintf(stdout, "In uscita viene fornita una distribuzione gaussiana di punti\n"
+						"campionata da una distrizione uniforme.\n");
 
 		return 1;
 	}
@@ -213,5 +245,7 @@ int main(int insert, char **termini)
 
 	/*Le distanze tra i valori trovati e quelli attesi in una simulazione monte carlo deve
 	essere compresa tra -2 e 2 generalmente.*/
+	orologio();
+
 	return 0;
 }
