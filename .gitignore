@@ -1,9 +1,19 @@
-# cartelle intere (in qualunque punto del repository)
+# 1) ignora tutto...
+*
+
+# 2) ...ma entra nelle cartelle, per poter guardare dentro
+!*/
+
+# 3) ...e tieni solo questi file
+!*.c
+!*.h
+!*.ipynb
+!Makefile
+!.gitignore
+!README.md
+
+# 4) cartelle da escludere sempre, anche se contengono file "permessi"
 dati/
 grafici/
-
-# file oggetto della compilazione
-*.o
-
-# checkpoint di Jupyter
+output/
 .ipynb_checkpoints/
