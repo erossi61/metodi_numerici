@@ -25,8 +25,8 @@ int main(int insert, char **termini)
 		printf("Per usare il programma è necessario inserire il numero di\n"
 			   "campionamenti che si vuole fare dopo il nome del programma.\n"
 			   "La forma da usare è:\n");
-		printf("%s campionamenti", termini[0]);
-		printf("In uscita viene fornita la stima di pi greco con il simple sampling Monte carlo.");
+		printf("%s campionamenti \n", termini[0]);
+		printf("In uscita viene fornita la stima di pi greco con il simple sampling Monte carlo.\n");
 
 		return 0;
 	}
@@ -38,7 +38,7 @@ int main(int insert, char **termini)
 
 	if (sample <= 0)
 	{
-		printf("Il numero di campionamenti deve essere positivo e non nullo.");
+		printf("Il numero di campionamenti deve essere positivo e non nullo.\n");
 		return 1;
 	}
 

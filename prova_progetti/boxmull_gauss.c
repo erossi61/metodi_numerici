@@ -68,7 +68,7 @@ int main(int insert, char **termini)
 
 	if (sample <= 0)
 	{
-		printf("Il numero di campionamenti deve essere positivo e non nullo.");
+		printf("Il numero di campionamenti deve essere positivo e non nullo.\n");
 		return 1;
 	}
 
