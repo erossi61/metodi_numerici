@@ -1,8 +1,8 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "pcg32min.h"
-#include "random.h"
+#include "../include/pcg32min.h"
+#include "../include/random.h"
 
 // initialization
 void myrand_init(unsigned long int initstate, unsigned long int initseq)

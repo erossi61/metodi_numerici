@@ -1,0 +1,9 @@
+# cartelle intere (in qualunque punto del repository)
+dati/
+grafici/
+
+# file oggetto della compilazione
+*.o
+
+# checkpoint di Jupyter
+.ipynb_checkpoints/

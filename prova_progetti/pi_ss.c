@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "../generatore/random.h"
+#include "../include/random.h"
 
 int main(int insert, char **termini)
 {
@@ -22,11 +22,11 @@ int main(int insert, char **termini)
 	if (insert != 2)
 	{ /*se abbiamo digitato più di due parole o meno ci
 	  spiega come far funzionare il programma*/
-		fprintf(stdout, "Per usare il programma è necessario inserire il numero di\n"
-						"campionamenti che si vuole fare dopo il nome del programma.\n"
-						"La forma da usare è:\n");
-		fprintf(stdout, "%s campionamenti", termini[0]);
-		fprintf(stdout, "In uscita viene fornita la stima di pi greco con il simple sampling Monte carlo.");
+		printf("Per usare il programma è necessario inserire il numero di\n"
+			   "campionamenti che si vuole fare dopo il nome del programma.\n"
+			   "La forma da usare è:\n");
+		printf("%s campionamenti", termini[0]);
+		printf("In uscita viene fornita la stima di pi greco con il simple sampling Monte carlo.");
 
 		return 0;
 	}
@@ -38,7 +38,7 @@ int main(int insert, char **termini)
 
 	if (sample <= 0)
 	{
-		fprintf(stdout, "Il numero di campionamenti deve essere positivo e non nullo.");
+		printf("Il numero di campionamenti deve essere positivo e non nullo.");
 		return 1;
 	}
 
@@ -61,7 +61,7 @@ int main(int insert, char **termini)
 	myrand_init(seme1, seme2);
 	contatore = 0;
 
-	FILE *fp = fopen("punti_pi.txt", "w");
+	FILE *fp = fopen("dati/punti_pi.txt", "w");
 
 	if (fp == NULL)
 	{
