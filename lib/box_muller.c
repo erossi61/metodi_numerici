@@ -14,7 +14,7 @@ con una gaussiana. La funzione non produce un vero e proprio output sotto forma 
 La funzione in ingresso prende le posizioni della memoria in cui vivono y1 e y2 e
 alla fine, una volta calcolati y1 e y2 i valori ottenuti vengono inseriti in tale indirizzo di memoria.
 Questo metodo è più lento di quello polare dato checalcolare le funzioni trigonometriche è pesante. */
-void boxm_base(double *restrict y1, double *restrict y2)
+void bm_base(double *restrict y1, double *restrict y2)
 {
 	double x, z;
 	x = -2 * log(myrand());
@@ -25,7 +25,7 @@ void boxm_base(double *restrict y1, double *restrict y2)
 }
 /*box muller isotropo con gaussiana.
  */
-double bm1_polar(void)
+double bm_1gauss_pol(void)
 {
 	double x, y, s, z1;
 	/*Schema do while:
@@ -55,7 +55,7 @@ double bm1_polar(void)
 }
 
 /*box muller isotropo condue gaussiane*/
-void bm2_polar(double *restrict g1, double *restrict g2)
+void bm_2gauss_pol(double *restrict g1, double *restrict g2)
 {
 	double x, y, s;
 	do

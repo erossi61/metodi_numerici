@@ -125,7 +125,7 @@ int main(int insert, char **termini)
 
 	for (i = 0; i < sample / 2; i++)
 	{
-		bm2_polar(&tm1, &tm2);
+		bm_2gauss_pol(&tm1, &tm2);
 		fprintf(fpgauss, "%f\n%f\n", tm1, tm2);
 
 		x += (tm1 + tm2);
@@ -134,7 +134,7 @@ int main(int insert, char **termini)
 	}
 	if (sample % 2 == 1)
 	{
-		tm1 += bm1_polar();
+		tm1 += bm_1gauss_pol();
 		fprintf(fpgauss, "%f\n", tm1);
 
 		x += (tm1);
