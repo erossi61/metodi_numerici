@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "../include/pcg32min.h"
+#include "../include/random.h"
 #include "../include/reticolo.h"
 
 // definizione delle variabili globali dichiarate (extern) in reticolo.h
@@ -68,4 +68,40 @@ void rinormalizza(void)
 			}
 		}
 	}
+}
+
+double densita_energia(void)
+{
+	int i, j, k;
+	double energia = 0.0, dens_energia = 0.0;
+
+	for (i = 0; i < L; i++)
+	{
+		for (j = 0; j < L; j++)
+		{
+			for (k = 0; k < L; k++)
+			{
+				energia -= spin[i][j][k].x * (spin[ip[i]][j][k].x + spin[i][ip[j]][k].x + spin[i][j][ip[k]].x) + spin[i][j][k].y * (spin[ip[i]][j][k].y + spin[i][ip[j]][k].y + spin[i][j][ip[k]].y);
+			}
+		}
+	}
+	return dens_energia = (double)energia / (VOLUME);
+}
+
+void magnetizzazione(double *mx, double *my)
+{
+	int i, j, k;
+	for (i = 0; i < L; i++)
+	{
+		for (j = 0; j < L; j++)
+		{
+			for (k = 0; k < L; k++)
+			{
+				*mx += spin[i][j][k].x;
+				*my += spin[i][j][k].y;
+			}
+		}
+	}
+	*mx /= (VOLUME);
+	*my /= (VOLUME);
 }

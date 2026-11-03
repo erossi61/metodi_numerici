@@ -1,5 +1,5 @@
-#ifndef RANDOM_H
-#define RANDOM_H
+#ifndef RETICOLO_H
+#define RETICOLO_H
 
 #ifndef L
 #define L 16 // lato del reticolo (si cambia con -DL=...)
@@ -18,10 +18,15 @@ typedef struct
 	double y;
 } Spin;
 
+extern Spin spin[L][L][L]; // spin[x][y][z] = spin nel sito (x,y,z)
+extern int ip[L], im[L];
+
 void vicini_period(void);
 void freddo(void);
 void caldo(void);
 void rinormalizza(void);
+double densita_energia(void);
+void magnetizzazione(double *mx, double *my);
 
 static inline void somma_vicini(int i, int j, int k, double *Sx, double *Sy)
 {
