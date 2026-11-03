@@ -11,8 +11,11 @@ int ip[L], im[L];
 void vicini_period(void)
 {
 	int i;
-	ip[i] = (i + 1) % L;
-	im[i] = (i - 1 + L) % L;
+	for (i = 0; i < L; i++)
+	{
+		ip[i] = (i + 1) % L;
+		im[i] = (i - 1 + L) % L;
+	}
 }
 
 void freddo(void)
