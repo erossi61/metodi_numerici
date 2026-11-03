@@ -1,0 +1,32 @@
+#ifndef RANDOM_H
+#define RANDOM_H
+
+#ifndef L
+#define L 16 // lato del reticolo (si cambia con -DL=...)
+#endif
+
+#define VOLUME ((double)L * L * L) // numero di siti (come double, per le medie)
+#define DUEPI 6.28318530717958647692
+
+// TIPO "Spin": un vettore a due componenti.
+// La definizione del tipo sta nell'header perche' TUTTI i file che usano
+// spin[x][y][z].x devono sapere come e' fatta la struttura.
+// (Definire un tipo non occupa memoria: si puo' includere in piu' file.)
+typedef struct
+{
+	double x;
+	double y;
+} Spin;
+
+void vicini_period(void);
+void freddo(void);
+void caldo(void);
+void rinormalizza(void);
+
+static inline void somma_vicini(int i, int j, int k, double *Sx, double *Sy)
+{
+	*Sx = spin[ip[i]][j][k].x + spin[i][ip[j]][k].x + spin[i][j][ip[k]].x + spin[im[i]][j][k].x + spin[i][im[j]][k].x + spin[i][j][im[k]].x;
+	*Sy = spin[ip[i]][j][k].y + spin[i][ip[j]][k].y + spin[i][j][ip[k]].y + spin[im[i]][j][k].y + spin[i][im[j]][k].y + spin[i][j][im[k]].y;
+}
+
+#endif
