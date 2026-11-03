@@ -35,3 +35,21 @@ int metropolis(int i, int j, int k, double alpha, double beta)
 	}
 	return 0;
 }
+
+long sweep_metropolis(double alpha, double beta)
+{
+	int i, j, k;
+	long accettanza = 0;
+
+	for (i = 0; i < L; i++)
+	{
+		for (j = 0; j < L; j++)
+		{
+			for (k = 0; k < L; k++)
+			{
+				accettanza += metropolis(i, j, k, alpha, beta);
+			}
+		}
+	}
+	return accettanza;
+}
