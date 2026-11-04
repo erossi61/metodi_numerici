@@ -8,12 +8,14 @@
 #include "../include/microcanonico.h"
 #include "../include/metropolis.h"
 
+#define ripetizioni_max 3
+
 int main(int insert, char **termini)
 {
 	long int sample;
-	double beta, alpha, epsilon;
 	int inizializzazione;
 	unsigned long seed;
+	double beta, alpha, epsilon;
 	char nome_file[50];
 	if (insert != 8)
 	{ /*se abbiamo digitato più di due parole o meno ci
@@ -29,7 +31,8 @@ int main(int insert, char **termini)
 			   "La forma da usare è:\n");
 		printf("%s con accanto il numero campionamenti, beta, seed, alpha, epsilon, inizializzazione, file dati.\n", termini[0]);
 		printf("File compilato con L = %d\n", L);
-		printf("In uscita viene fornito BOOOO.\n");
+		printf("In uscita viene fornito un file che ha come prime righe i dati di input.\n"
+			   "Poi fornisce 3 colonne E, mx, my con una riga per misurazione\n");
 
 		return 1;
 	}
@@ -49,7 +52,13 @@ int main(int insert, char **termini)
 		return 1;
 	}
 
-	strcpy(nome_file, termini[7]); // BISOGNA CONTROLLARE NOME FILE
+	// controlla che il nome del file entri in nome_file prima di copiarlo
+	if (strlen(termini[7]) >= sizeof(nome_file))
+	{
+		printf("Il nome del file e' troppo lungo\n");
+		return 1;
+	}
+	strcpy(nome_file, termini[7]);
 
 	myrand_init(seed, seed + 127);
 	vicini_period();
@@ -69,29 +78,47 @@ int main(int insert, char **termini)
 		return 1;
 	}
 
-	FILE *fpgauss = fopen("dati/dati_gauss.txt", "w");
+	FILE *fpdata = fopen(nome_file, "w");
 
-	if (fpgauss == NULL)
+	if (fpdata == NULL)
 	{
 		printf("Errore nell'apertura del file!\n");
 		return 1;
 	}
+
+	printf(fpdata, "# L = %d\n# beta = %.10f\n# seed = %lu\n# alpha = %f\n# epsilon = %f\n", L, beta, seed, alpha, epsilon);
+	fprintf(fpdata, "# sample = %ld\n# inizializzazione = %d\n", sample, inizializzazione);
+	fprintf(fpdata, "# colonne: densita_energia mx my\n");
+
 	long int acc = 0;
-	double r;
-	int i;
+	double r = 0.0;
+	int i, metropolis_totali = 0;
+	double mx, my;
 	for (i = 0; i < sample; i++)
 	{
 		r = myrand();
 		if (r < epsilon)
 		{
-			acc += sweep_metropolis(alpha, beta);
+			acc += sweep_metropolis(ripetizioni_max, alpha, beta);
+			metropolis_totali += ripetizioni_max;
 		}
 		else
 		{
-			sweep_micro_can();
+			for (int k = 0; k < 5; k++)
+			{
+				sweep_micro_can();
+			}
 		}
+		rinormalizza();
+		magnetizzazione(&mx, &my);
+		fprintf(fpdata, "%.12f %.12f %.12f\n", densita_energia(), mx, my);
 	}
-	printf("accetanza %ld\n", acc);
-	fclose(fpgauss);
+
+	if (metropolis_totali > 0)
+	{
+		printf("accettanza Metropolis = %f\n", (double)acc / ((double)metropolis_totali * VOLUME));
+	}
+
+	fclose(fpdata);
 	return 0;
 }
