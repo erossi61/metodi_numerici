@@ -27,7 +27,8 @@ int main(int insert, char **termini)
 			   "alpha = angolo del metropolis\n"
 			   "epsilon = probabilità di utilizzo di metropolis o microcanonico (= 1 solo metropolis)\n"
 			   "inizializzazione = tipo di inizializzazione (caldo = 0 / freddo = 1)\n"
-			   "file di dati = nome del file nel quale vengono scritti i dati\n"
+			   "file di dati = nome del file dati va scritto come: dati/prova.txt (se ci troviamo in modulo 1)\n"
+			   "altrimenti come ../dati/prova.txt (se ci troviamo metodi numerici e deve cercare la cartella dati)\n"
 			   "La forma da usare è:\n");
 		printf("%s con accanto il numero campionamenti, beta, seed, alpha, epsilon, inizializzazione, file dati.\n", termini[0]);
 		printf("File compilato con L = %d\n", L);
@@ -86,7 +87,7 @@ int main(int insert, char **termini)
 		return 1;
 	}
 
-	printf(fpdata, "# L = %d\n# beta = %.10f\n# seed = %lu\n# alpha = %f\n# epsilon = %f\n", L, beta, seed, alpha, epsilon);
+	fprintf(fpdata, "# L = %d\n# beta = %.10f\n# seed = %lu\n# alpha = %f\n# epsilon = %f\n", L, beta, seed, alpha, epsilon);
 	fprintf(fpdata, "# sample = %ld\n# inizializzazione = %d\n", sample, inizializzazione);
 	fprintf(fpdata, "# colonne: densita_energia mx my\n");
 
