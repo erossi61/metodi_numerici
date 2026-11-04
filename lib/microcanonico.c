@@ -10,7 +10,7 @@ void micro_can(int i, int j, int k)
 	srSr = spin[i][j][k].x * Sx + spin[i][j][k].y * Sy;
 	Sr_quadro = (Sx * Sx + Sy * Sy);
 
-	if (Sr_quadro > 10e-26)
+	if (Sr_quadro > 1.0e-26)
 	{
 		coeff = 2 * srSr / Sr_quadro;
 		spin[i][j][k].x = coeff * Sx - spin[i][j][k].x;

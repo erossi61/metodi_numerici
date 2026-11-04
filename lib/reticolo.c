@@ -94,6 +94,8 @@ double densita_energia(void)
 void magnetizzazione(double *mx, double *my)
 {
 	int i, j, k;
+	*mx = 0.0;
+	*my = 0.0;
 	for (i = 0; i < L; i++)
 	{
 		for (j = 0; j < L; j++)

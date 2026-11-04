@@ -41,7 +41,6 @@ int main(int insert, char **termini)
 		alpha = atof(termini[4]);
 		epsilon = atof(termini[5]);
 		inizializzazione = atoi(termini[6]);
-		strcpy(nome_file, termini[7]);
 	}
 
 	if (sample <= 0 || epsilon < 0.0 || epsilon > 1.0 || alpha <= 0.0)
@@ -49,6 +48,8 @@ int main(int insert, char **termini)
 		printf("I parametri inseriti sono sbagliati: sample <= 0, epsilon < 0.0,  epsilon > 1.0, alpha <= 0.0\n");
 		return 1;
 	}
+
+	strcpy(nome_file, termini[7]); // BISOGNA CONTROLLARE NOME FILE
 
 	myrand_init(seed, seed + 127);
 	vicini_period();
@@ -68,14 +69,13 @@ int main(int insert, char **termini)
 		return 1;
 	}
 
-	fp = fopen("dati/dati_gauss.txt", "w");
+	FILE *fpgauss = fopen("dati/dati_gauss.txt", "w");
 
 	if (fpgauss == NULL)
 	{
 		printf("Errore nell'apertura del file!\n");
 		return 1;
 	}
-
 	long int acc = 0;
 	double r;
 	int i;
@@ -92,6 +92,6 @@ int main(int insert, char **termini)
 		}
 	}
 	printf("accetanza %ld\n", acc);
-
+	fclose(fpgauss);
 	return 0;
 }

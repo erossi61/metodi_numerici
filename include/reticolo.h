@@ -7,11 +7,6 @@
 
 #define VOLUME ((double)L * L * L) // numero di siti (come double, per le medie)
 #define DUEPI 6.28318530717958647692
-
-// TIPO "Spin": un vettore a due componenti.
-// La definizione del tipo sta nell'header perche' TUTTI i file che usano
-// spin[x][y][z].x devono sapere come e' fatta la struttura.
-// (Definire un tipo non occupa memoria: si puo' includere in piu' file.)
 typedef struct
 {
 	double x;
