@@ -9,6 +9,7 @@
 #include "../include/metropolis.h"
 
 #define ripetizioni_max 3
+#define misura_ogni 5
 
 int main(int insert, char **termini)
 {
@@ -16,7 +17,7 @@ int main(int insert, char **termini)
 	int inizializzazione;
 	unsigned long seed;
 	double beta, alpha, epsilon;
-	char nome_file[50];
+	char nome_file[260];
 	if (insert != 8)
 	{ /*se abbiamo digitato più di due parole o meno ci
 	  spiega come far funzionare il programma*/
@@ -47,9 +48,9 @@ int main(int insert, char **termini)
 		inizializzazione = atoi(termini[6]);
 	}
 
-	if (sample <= 0 || epsilon < 0.0 || epsilon > 1.0 || alpha <= 0.0)
+	if (sample <= 0 || epsilon <= 0.0 || epsilon > 1.0 || alpha <= 0.0)
 	{
-		printf("I parametri inseriti sono sbagliati: sample <= 0, epsilon < 0.0,  epsilon > 1.0, alpha <= 0.0\n");
+		printf("I parametri inseriti sono sbagliati: serve sample > 0, epsilon > 0.0,  epsilon <= 1.0, alpha > 0.0\n");
 		return 1;
 	}
 
@@ -89,12 +90,14 @@ int main(int insert, char **termini)
 
 	fprintf(fpdata, "# L = %d\n# beta = %.10f\n# seed = %lu\n# alpha = %f\n# epsilon = %f\n", L, beta, seed, alpha, epsilon);
 	fprintf(fpdata, "# sample = %ld\n# inizializzazione = %d\n", sample, inizializzazione);
+	fprintf(fpdata, "# ripetizioni_max = %d\n# misura_ogni = %d\n", ripetizioni_max, misura_ogni);
 	fprintf(fpdata, "# colonne: densita_energia mx my\n");
 
 	long int acc = 0;
 	double r = 0.0;
-	int i, metropolis_totali = 0;
+	long int i, metropolis_totali = 0;
 	double mx, my;
+	clock_t tempo_iniziale = clock();
 	for (i = 0; i < sample; i++)
 	{
 		r = myrand();
@@ -105,19 +108,28 @@ int main(int insert, char **termini)
 		}
 		else
 		{
-			for (int k = 0; k < 5; k++)
-			{
-				sweep_micro_can();
-			}
+			sweep_micro_can();
 		}
+		if ((i + 1) % misura_ogni == 0) // misuro solo ogni misura_ogni passi
+		{
+			rinormalizza();
+			magnetizzazione(&mx, &my);
+			fprintf(fpdata, "%.12f %.12f %.12f\n", densita_energia(), mx, my);
+		}
+		/*
 		rinormalizza();
 		magnetizzazione(&mx, &my);
 		fprintf(fpdata, "%.12f %.12f %.12f\n", densita_energia(), mx, my);
+		*/
 	}
+
+	double tempo_totale = (double)(clock() - tempo_iniziale) / CLOCKS_PER_SEC;
+	fprintf(fpdata, "# tempo CPU = %f s\n", tempo_totale);
 
 	if (metropolis_totali > 0)
 	{
-		printf("accettanza Metropolis = %f\n", (double)acc / ((double)metropolis_totali * VOLUME));
+		double accettanza_metr = (double)acc / ((double)metropolis_totali * VOLUME);
+		fprintf(fpdata, "# accettanza = %f\n", accettanza_metr); // NUOVO: nel file
 	}
 
 	fclose(fpdata);
