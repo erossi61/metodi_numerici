@@ -2,7 +2,13 @@
 
 ## simulazioni.c
 
-Programma che implementa tutto ciò che è necessario per realizzare simulazioni numeriche e fare raccolta dati su un modello XY (O(N) con N = 2) in 3D. Il reticolo per questa simulazione è definito in **`reticolo.c`**.
+Programma che implementa tutto ciò che è necessario per realizzare simulazioni numeriche e fare raccolta dati su un modello XY (O(N) con N = 2) in 3D. Il reticolo per questa simulazione è definito in **`reticolo.c`** e la dimensione del reticolo è definita come variabile globale in **`reticolo.h`**.
+La dimensione del reticolo si cambia durante l'esecuzione con:
+
+```c
+// lato del reticolo (si cambia con -DL=...)
+```
+
 Cosa prende in input, cosa restituisce in output e cosa scrive su file:
 
 ```c
