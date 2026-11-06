@@ -7,7 +7,7 @@ pgc32min contiene i dettagli del generatore di numeri casuali mentre random lo i
 - **`myrand_init(unsigned long int initstate, unsigned long int initseq)`**: chiama il generatore di numeri casuali e lo fa partire fornendogli i valori iniziali che inseriamo noi. Il generatore di numeri casuali deve essere iniziallizato una sola volta all'inizio del main altrimentiogni volta ripartirebbe da capo e darebbe sempre gli stessi numeri (soprattutto se metto sempre gli stessi semi iniziali). Generalmente si inizializza con il tempo macchina.
   Esempio di implementazione:
 
-  ```bash
+  ```c
   const unsigned long int seme1 = (unsigned long int)time(NULL);
   const unsigned long int seme2 = seme1 + 157;
   #deve essere un numero primo grandicello
@@ -16,7 +16,7 @@ pgc32min contiene i dettagli del generatore di numeri casuali mentre random lo i
 
 - **`double myrand(void)`**: questa funzione non prende niente in ingresso, chiama il generatore di numeri casuali (che ha effettivamente generato un numero) e lo divide per un numero enorme (probabilemte sicuramente più grande di long int) di modo da ottenere in unscita un numero con la virgola compreso tra 0 e 1 escluso. A questo punto, nei nostri programmi dobbiamo usare myrandinit per far partire il generatore e poi prendere myrand di modo da acere il numero casuale desiderato tra 0 e 1.
   Esempio di implementazione:
-  ```bash
+  ```c
   z = myrand();
   ```
 
@@ -34,7 +34,7 @@ Contiene tutte le funzioni asociate ai dettagli del reticolo.
 
 - **`void somma_vicini(int i, int j, int k, double *Sx, double *Sy)`** : funzione contenuta nel file reticolo.h. Fa la somma di tutti i primi vicini di un sito sia lungo x che lungo y e sia avanti che indietro. Restituisce questa somma come indirizzi nella definizione della funzione.
 
-```bash
+```c
 *Sx = spin[ip[i]][j][k].x + spin[i][ip[j]][k].x + spin[i][j][ip[k]].x + spin[im[i]][j][k].x + spin[i][im[j]][k].x + spin[i][j][im[k]].x;
 *Sy = spin[ip[i]][j][k].y + spin[i][ip[j]][k].y + spin[i][j][ip[k]].y + spin[im[i]][j][k].y + spin[i][im[j]][k].y + spin[i][j][im[k]].y;
 ```
@@ -47,7 +47,7 @@ Contiene tutte le funzioni asociate ai dettagli del reticolo.
 - **`void rinormalizza(void)`**: Rinormalizza i vettori di sito lungo x e lungo y. Controllo necessario dato che i vettori nel modello O(N) devono essere normalizzati ad uno (operativamente il computer non li mantiene sempre normalizzati ad uno).
 - **`double densita_energia(void)`**: Calcola l'energia del reticolo come:
 
-```bash
+```c
 energia -= spin[i][j][k].x * (spin[ip[i]][j][k].x + spin[i][ip[j]][k].x + spin[i][j][ip[k]].x) + spin[i][j][k].y * (spin[ip[i]][j][k].y + spin[i][ip[j]][k].y + spin[i][j][ip[k]].y);
 ```
 
@@ -56,7 +56,7 @@ Restituisce il valore della densità d'energia.
 
 - **`void magnetizzazione(double *mx, double *my)`**: Calcola la magnetizzazione lungo x e lungo y come la somma di tutti gli spin lungo x e lungo y del reticolo. Restituisce questi valori/volume come indirizzi di puntatori nella definizione della magnetizzazione. Viene usato come:
 
-```console
+```c
 double mx, my;
 magnetizzazione(&mx, &my);
 fprintf(fpdata, "%.12f %.12f\n",mx, my);
@@ -68,26 +68,26 @@ Funzioni necessarie per applicare il metropolis.
 
 - **`int metropolis(int i, int j, int k, int ripetizione_max, double alpha, double beta)`**: Prende in input la temperatura, l'angolo dell'ampiezza del metropolis e il numero di volte in cui si fa il metropolis sullo stesso stesso sito per evitare di calcolare più volte la somma sui primi vicini. Somma sui vicini del sito preso in considerazione, poi definisce un angolo theta che sia simmetrico rispetto a 0 per poter applicare il metropolis come:
 
-```bash
+```c
 theta = alpha*(1 - 2*myrand());
 ```
 
 definisce i nuovi spin lungo x e y come:
 
-```bash
+```c
 nuovo_x = spin[i][j][k].x * coseno + spin[i][j][k].y * seno;
 nuovo_y = -spin[i][j][k].x * seno + spin[i][j][k].y * coseno;
 ```
 
 Calcola la differenza di energia tra la configurazione di partenza e quella nuova come
 
-```bash
+```c
 delta_E = -((nuovo_x - spin[i][j][k].x) * Sx + (nuovo_y - spin[i][j][k].y) * Sy);
 ```
 
 Poi decide se accettare o meno lo stato di prova; lo accetta se una di queste due condizioni viene soddisfatta
 
-```bash
+```c
 delta_E <= 0;
 myrand() < exp(-beta * delta_E);
 ```
@@ -102,7 +102,7 @@ Funzioni necessarie per realizzare un update microcanonico.
 
 **`void micro_can(int i, int j, int k)`**: Prende in ingresso il sito seul quale fare il microcanonico. Controlla che il modulo quadro della somma dei primi vicini sia sopra soglia altrimenti le operazioni del microcanonico vanno all'infinito. Se soddisfa questa condizione si procede con il microcanonico ovvero con la proiezione degli spin:
 
-```bash
+```c
 srSr = spin[i][j][k].x * Sx + spin[i][j][k].y * Sy;
 coeff = 2 * srSr / Sr_quadro;
 spin[i][j][k].x = coeff * Sx - spin[i][j][k].x;
