@@ -56,7 +56,7 @@ Restituisce il valore della densità d'energia.
 
 - **`void magnetizzazione(double *mx, double *my)`**: Calcola la magnetizzazione lungo x e lungo y come la somma di tutti gli spin lungo x e lungo y del reticolo. Restituisce questi valori/volume come indirizzi di puntatori nella definizione della magnetizzazione. Viene usato come:
 
-```bash
+```console
 double mx, my;
 magnetizzazione(&mx, &my);
 fprintf(fpdata, "%.12f %.12f\n",mx, my);
